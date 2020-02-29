@@ -43,6 +43,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * @author huangyong
+ * 分享配置
  * createTime 2019-09-11
  */
 public class ShareTabFragment extends Fragment {

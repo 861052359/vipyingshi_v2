@@ -96,6 +96,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * @author huangyong
+ * 播放页
  * createTime 2019-09-14
  */
 public class OnlineDetailPageActivity extends AppCompatActivity implements IDetailView, IRecView, View.OnClickListener {

@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
+ * 分类页
  * @author huangyong
  */
 public class CategoryActivity extends AppCompatActivity {
@@ -95,7 +96,7 @@ public class CategoryActivity extends AppCompatActivity {
         requestYear = 0;
 
         String[] mainTab = {
-                "全部形式", "电影", "电视剧", "动漫", "综艺"};
+                "全部形式", "电影", "电视剧", "动漫", "综艺","VIP视频"};
 
 
         //地区都一样
@@ -103,6 +104,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         String[] yearTab = {
                 "全部年代",
+                "2020",
                 "2019",
                 "2018",
                 "2017",
@@ -158,33 +160,40 @@ public class CategoryActivity extends AppCompatActivity {
                     typeContent="全部分类";
                     break;
                 case 1:
-                    //电视剧显示类别列表
+                    //电影显示类别列表
                     typeCatTab.setVisibility(View.VISIBLE);
                     areaCatTab.setVisibility(View.VISIBLE);
                     CategoryActivity.this.movTabAdapter.setData(movie);
-                    requestTypeId = 7;
+                    requestTypeId = 1;
                     typeContent="电影";
                     break;
                 case 2:
-                    //电影，显示类别列表
+                    //电视剧显示类别列表
                     typeCatTab.setVisibility(View.VISIBLE);
                     areaCatTab.setVisibility(View.VISIBLE);
                     CategoryActivity.this.movTabAdapter.setData(seri);
                     typeContent="电视剧";
-                    requestTypeId = 13;
+                    requestTypeId = 2;
                     break;
                 case 3:
-                    //动漫，隐藏类别列表
-                    typeCatTab.setVisibility(View.GONE);
-                    areaCatTab.setVisibility(View.VISIBLE);
-                    requestTypeId = 4;
-                    typeContent="动漫";
-                    break;
-                case 4:
-                    //综艺，隐藏类别列表，更换地区数据
+                    //动漫类别列表
                     typeCatTab.setVisibility(View.GONE);
                     areaCatTab.setVisibility(View.VISIBLE);
                     requestTypeId = 3;
+                    typeContent="动漫";
+                    break;
+                case 4:
+                    //综艺隐藏类别列表，更换地区数据
+                    typeCatTab.setVisibility(View.GONE);
+                    areaCatTab.setVisibility(View.VISIBLE);
+                    requestTypeId = 4;
+                    typeContent="综艺";
+                    break;
+                case 5:
+                    //VIP视频类别列表，更换地区数据
+                    typeCatTab.setVisibility(View.GONE);
+                    areaCatTab.setVisibility(View.VISIBLE);
+                    requestTypeId = 22;
                     typeContent="综艺";
                     break;
                 default:

@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * @author huangyong
+ * 兑换会员
  * createTime 2019/6/18
  */
 public class ShopCenterPagerAdpter extends FragmentPagerAdapter {

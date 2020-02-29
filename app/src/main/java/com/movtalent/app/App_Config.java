@@ -12,12 +12,12 @@ public class App_Config {
     /**
      * 服务器所有请求依赖的主域名，为cms接口系统安装的地址
      */
-    public static final String BASE_URL = "http://45.134.0.173/";
+    public static final String BASE_URL = "http://www.dabaotv.cn/";
 
     /**
      * 主分类配置，不建议修改
      */
-    public static final String[] TAB_ARR = {"推荐", "电影", "电视剧", "动漫", "综艺"};
+    public static final String[] TAB_ARR = {"推荐", "电影", "电视剧", "动漫", "综艺" ,"VIP视频"};
 
 
     /**

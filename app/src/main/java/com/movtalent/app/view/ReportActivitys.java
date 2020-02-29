@@ -22,6 +22,7 @@ import butterknife.BindView;
 
 /**
  * @author huangyong
+ * 意见
  * createTime 2019-07-09
  */
 public class ReportActivitys extends BaseActivity implements IReport {

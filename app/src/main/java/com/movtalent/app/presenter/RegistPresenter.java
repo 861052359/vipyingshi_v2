@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author huangyong
+ * 注册
  * createTime 2019-09-17
  */
 public class RegistPresenter {

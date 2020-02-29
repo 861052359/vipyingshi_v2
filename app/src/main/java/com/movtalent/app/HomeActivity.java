@@ -275,7 +275,7 @@ public class HomeActivity extends AppCompatActivity {
 
         DownloadManager  manager = DownloadManager.getInstance(this);
 
-        manager.setApkName("追剧达人.apk")
+        manager.setApkName("大宝影城.apk")
                 .setApkUrl(dto.getData().getDownloadUrl())
                 .setSmallIcon(R.mipmap.ticon2)
                 .setShowNewerToast(true)

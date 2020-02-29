@@ -241,7 +241,7 @@ public class SettingActivity extends AppCompatActivity {
 
         manager = DownloadManager.getInstance(this);
 
-        manager.setApkName("极光影院.apk")
+        manager.setApkName("大宝影城.apk")
                 .setApkUrl(dto.getData().getDownloadUrl())
                 .setSmallIcon(R.mipmap.ticon2)
                 .setShowNewerToast(true)

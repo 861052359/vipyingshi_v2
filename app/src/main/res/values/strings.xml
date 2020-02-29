@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">追剧达人</string>
+    <string name="app_name">大宝影城</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
