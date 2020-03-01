@@ -82,6 +82,7 @@ public class HomeMainFragment extends Fragment {
         ArrayList<VideoTypeVo.ClassBean> seris = new ArrayList<>();
         ArrayList<VideoTypeVo.ClassBean> currtoon = new ArrayList<>();
         ArrayList<VideoTypeVo.ClassBean> show = new ArrayList<>();
+        ArrayList<VideoTypeVo.ClassBean> vip = new ArrayList<>();
 
 
         ArrayList<Fragment> arrayList = new ArrayList<>();
@@ -107,6 +108,10 @@ public class HomeMainFragment extends Fragment {
             if (classInfo.getType_name().contains("综艺")) {
                 show.add(classInfo);
                 UrlConfig.show = show;
+            }
+            if (classInfo.getType_name().contains("VIP视频")) {
+                show.add(classInfo);
+                UrlConfig.vip = vip;
             }
 
         }

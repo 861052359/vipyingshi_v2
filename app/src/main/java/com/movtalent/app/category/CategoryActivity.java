@@ -125,6 +125,11 @@ public class CategoryActivity extends AppCompatActivity {
         seriBean.setType_id(0);
         seriBean.setType_name("全部类别");
         seri.add(0, seriBean);
+        ArrayList<VideoTypeVo.ClassBean> curtoon = UrlConfig.curtoon;
+        VideoTypeVo.ClassBean curtoonBean = new VideoTypeVo.ClassBean();
+        curtoonBean.setType_id(0);
+        curtoonBean.setType_name("全部类别");
+        seri.add(0, curtoonBean);
 
         movTabAdapter = new CateTabAdapter2(movie, (position, content) -> {
             requestTypeId = position == 0 ? 0 : content.getType_id();
@@ -194,7 +199,7 @@ public class CategoryActivity extends AppCompatActivity {
                     typeCatTab.setVisibility(View.GONE);
                     areaCatTab.setVisibility(View.VISIBLE);
                     requestTypeId = 22;
-                    typeContent="综艺";
+                    typeContent="VIP视频";
                     break;
                 default:
                     //全部分类，显示类别列表

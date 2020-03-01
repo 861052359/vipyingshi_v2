@@ -171,4 +171,5 @@ public class UrlConfig {
     public static ArrayList<VideoTypeVo.ClassBean> curtoon;
     public static ArrayList<VideoTypeVo.ClassBean> seri;
     public static ArrayList<VideoTypeVo.ClassBean> movie;
+    public static ArrayList<VideoTypeVo.ClassBean> vip;
 }

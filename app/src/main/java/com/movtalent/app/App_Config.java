@@ -12,7 +12,7 @@ public class App_Config {
     /**
      * 服务器所有请求依赖的主域名，为cms接口系统安装的地址
      */
-    public static final String BASE_URL = "http://www.dabaotv.cn/";
+    public static final String BASE_URL = "https://www.dabaotv.cn/";
 
     /**
      * 主分类配置，不建议修改
@@ -23,11 +23,11 @@ public class App_Config {
     /**
      * 友盟统计key
      */
-    public static final String UMENKEY = "5d904dcb3fc195c774000b0e";
+    public static final String UMENKEY = "5c428bbeb465f57526000b8d";
     /**
      * 友盟统计app渠道名
      */
-    public static final String UMEN_APP_NAME = "movtalent";
+    public static final String UMEN_APP_NAME = "dabaotv";
     /**
      * 友盟推送app key
      */
@@ -37,7 +37,7 @@ public class App_Config {
     /**
      * qq分享 appId
      */
-    public static final String QQ_APP_ID = "1109823571";
+    public static final String QQ_APP_ID = "1107906831";
     public static final String QQ_APP_SCOP = "get_user_info,"
             + "get_simple_userinfo,"
             + "add_share,"
@@ -69,7 +69,7 @@ public class App_Config {
     /**
      * 开屏页地址
      */
-    public static final String SPLAH_URL = "http://www.baidu.com";
+    public static final String SPLAH_URL = "http://www.dabaotv.cn";
 
     /**
      * 内置头像，可自己替换
@@ -118,7 +118,7 @@ public class App_Config {
             "海外"
     };
 
-    public static final String JUMP_URL_3 = "http://www.baidu.com";
-    public static final String JUMP_URL_2 = "http://www.baidu.com";
-    public static final String JUMP_URL_1 = "http://www.baidu.com";
+    public static final String JUMP_URL_3 = "http://www.dabaotv.cn";
+    public static final String JUMP_URL_2 = "http://www.dabaotv.cn";
+    public static final String JUMP_URL_1 = "http://www.dabaotv.cn";
 }
