@@ -12,7 +12,7 @@ public class App_Config {
     /**
      * 服务器所有请求依赖的主域名，为cms接口系统安装的地址
      */
-    public static final String BASE_URL = "https://www.dabaotv.cn/";
+    public static final String BASE_URL = "https://app.dabaotv.cn/";
 
     /**
      * 主分类配置，不建议修改
@@ -87,7 +87,7 @@ public class App_Config {
     /**
      * 服务器里这个接口系统的安装目录
      */
-    public static final String SERVER_PATH = "app/cms/";
+    public static final String SERVER_PATH = "/";
     /**
      * 会员显示配置，不建议修改，如果要改，需要同时改后台接口
      */

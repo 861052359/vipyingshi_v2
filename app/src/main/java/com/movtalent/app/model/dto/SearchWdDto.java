@@ -66,7 +66,8 @@ public class SearchWdDto {
         }
 
         public String getVod_pic() {
-            return vod_pic;
+            String s = vod_pic.replaceFirst("mac:", "https:");
+            return s;
         }
 
         public void setVod_pic(String vod_pic) {

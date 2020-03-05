@@ -87,7 +87,7 @@
             android:drawableTop="@drawable/ic_coin"
             android:drawablePadding="4dp"
             android:gravity="center"
-            android:text="获取金币"
+            android:text="赚金币"
             android:textColor="@color/title_gray_color"
             android:textSize="12sp" />
 

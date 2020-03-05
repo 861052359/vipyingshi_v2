@@ -39,16 +39,16 @@
 
             <TextView
                 android:id="@+id/coin_num"
-                android:text="22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFAB00"
-                android:textSize="24sp"
+                android:layout_below="@+id/shop_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
-                android:layout_below="@+id/shop_title"
                 android:layout_marginRight="30dp"
-                tools:text="20" />
+                android:text="12"
+                android:textColor="#FFAB00"
+                android:textSize="24sp"
+                tools:text="请登录" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
