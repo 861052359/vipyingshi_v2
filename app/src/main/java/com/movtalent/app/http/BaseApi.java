@@ -68,10 +68,10 @@ public class BaseApi {
     // 执行网络请求
     public static <T> void request(Observable<T> observable,
                                    final IResponseListener<T> listener) {
-        if (isWifiProxy(App.getContext())) {
-            ToastUtil.showMessage("请关闭代理后重试");
-            return;
-        }
+//        if (isWifiProxy(App.getContext())) {
+//            ToastUtil.showMessage("请关闭代理后重试");
+//            return;
+//        }
         if (!NetUtil.isNetworkAvailable(App.getContext())) {
             ToastUtil.showMessage("网络不可用,请检查网络");
             if (listener != null) {

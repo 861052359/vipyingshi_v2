@@ -131,6 +131,9 @@ public interface ApiService {
     @GET(UrlConfig.getUpdate)
     Observable<UpdateDto> getUpdate();
 
+    @GET(RepairUrl.checkRepair)
+    Observable<UpdateDto> checkRepair();
+
     @GET(UrlConfig.getPublish)
     Observable<PostDto> getPost();
 

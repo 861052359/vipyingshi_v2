@@ -159,6 +159,17 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         }).getUpdate();
+        new UpdatePresenter(new IUpdate() {
+            @Override
+            public void loadDone(UpdateDto dto) {
+                checkVersion(dto);
+            }
+
+            @Override
+            public void loadEmpty() {
+
+            }
+        }).getRepair();
 
         requestAppPermissions();
         initPost();

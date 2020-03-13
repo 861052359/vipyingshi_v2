@@ -9,8 +9,9 @@
 
     <com.next.easynavigation.view.EasyNavigationBar
         android:id="@+id/navigationBar"
-        app:Easy_tabIconSize="28dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.next.easynavigation.view.EasyNavigationBar>
+        android:layout_height="match_parent"
+        app:Easy_tabIconSize="28dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"></com.next.easynavigation.view.EasyNavigationBar>
 </android.support.constraint.ConstraintLayout>

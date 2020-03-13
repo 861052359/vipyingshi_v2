@@ -31,16 +31,16 @@
             android:paddingLeft="10dp"
             android:layout_marginLeft="10dp"
             />
+
         <TextView
+            android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:text="发送"
-            android:id="@+id/send"
-            android:textSize="16sp"
+            android:text="biu一下"
             android:textColor="#3E3E3E"
-            />
+            android:textSize="16sp" />
     </RelativeLayout>
 </FrameLayout>

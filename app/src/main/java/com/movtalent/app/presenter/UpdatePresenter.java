@@ -49,4 +49,31 @@ public class UpdatePresenter {
                 }
         );
     }
+    public void getRepair(){
+        BaseApi.request(BaseApi.createApi(ApiService.class)
+                        .checkRepair(), new BaseApi.IResponseListener<UpdateDto>() {
+                    @Override
+                    public void onSuccess(UpdateDto data) {
+
+                        //对当前APP进行修复，远程接口不要修改
+                        if (data.getData().getVersionCode() > ApkUtil.getVersionCode(App.getContext())) {
+                            if (iUpdate!=null){
+                                iUpdate.loadDone(data);
+                            }
+                        } else {
+                            ToastUtil.showMessage("当前APP无错误");
+                        }
+
+
+
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                }
+        );
+    }
+
+
 }

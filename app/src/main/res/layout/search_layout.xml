@@ -32,7 +32,7 @@
             android:layout_toLeftOf="@+id/do_search"
             android:background="@drawable/serach_page_bg"
             android:gravity="center_vertical"
-            android:hint="搜索 影片、动漫、电视剧"
+            android:hint="点这搜索你想看的影片哦"
             android:paddingLeft="16dp"
             android:textColor="#C1212020"
             android:imeOptions="actionSearch"
@@ -57,7 +57,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:gravity="center_vertical"
-            android:text="搜索"
+            android:text="biu~~~"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
