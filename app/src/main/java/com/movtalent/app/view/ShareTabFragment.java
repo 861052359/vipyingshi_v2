@@ -102,7 +102,7 @@ public class ShareTabFragment extends Fragment {
             showShareView(mShareContent);
         });
         VipShareItemSectionn sectionn2 = new VipShareItemSectionn("分享下载链接", R.drawable.share_link_drawable, "每日分享下载链接", position -> {
-            ShareContent mShareContent = new ShareContentText("https://fir.im/zjmov");
+            ShareContent mShareContent = new ShareContentText("https://app.dabaotv.cn");
             showShareView(mShareContent);
         });
         VipShareItemSectionn sectionn3 = new VipShareItemSectionn("分享影片到微信", R.drawable.share_weichat_drawable, "每日分享影片到微信或朋友圈", position -> {

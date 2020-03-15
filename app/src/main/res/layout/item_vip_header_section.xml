@@ -9,13 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:background="#00DF1717" />
+
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:id="@+id/content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="#00DF1717"
         android:orientation="horizontal">
 
         <TextView
@@ -24,13 +26,13 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:background="@drawable/text_shap_of_corner"
+            android:drawableLeft="@drawable/ic_jinbi_4"
+            android:drawablePadding="@dimen/dp_4"
             android:paddingLeft="20dp"
             android:paddingTop="8dp"
             android:paddingRight="20dp"
             android:paddingBottom="8dp"
             android:text="我的金币"
-            android:drawablePadding="@dimen/dp_4"
-            android:drawableLeft="@drawable/ic_jinbi_4"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
@@ -39,11 +41,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/text_shap_of_corner"
+            android:drawableLeft="@drawable/ic_shop"
+            android:drawablePadding="@dimen/dp_4"
             android:paddingLeft="20dp"
             android:paddingTop="8dp"
-            android:drawableLeft="@drawable/ic_shop"
             android:paddingRight="20dp"
-            android:drawablePadding="@dimen/dp_4"
             android:paddingBottom="8dp"
             android:text="兑换中心"
             android:textColor="@color/white"

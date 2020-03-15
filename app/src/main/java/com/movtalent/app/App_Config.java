@@ -47,8 +47,8 @@ public class App_Config {
      * 微信分享、朋友圈分享 appId
      * 替换为自己申请的账户信息
      */
-    public static final String WEICHAT_APP_ID = "wxd2069b96357bdfe7";
-    public static final String WEICHAT_APP_SECRET = "89bc6b30bb7c750798296a7897bf8235";
+    public static final String WEICHAT_APP_ID = "wx27d8afa5b0c43650";
+    public static final String WEICHAT_APP_SECRET = "006158834debb4e618f7144f23e6b97e";
     /**
      * 微博分享 配置
      */

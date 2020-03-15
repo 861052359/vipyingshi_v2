@@ -62,9 +62,9 @@ public class HomeActivity extends AppCompatActivity {
     ConstraintLayout container;
     private String[] tabText = {"影库", "专题", "分享", "会员"};
     //未选中icon
-    private int[] normalIcon = {R.drawable.ic_shouye_u, R.drawable.ic_topics_u, R.drawable.ic_shares_u, R.drawable.ic_selfs_u};
+    private int[] normalIcon = {R.drawable.ic_shouye, R.drawable.ic_topics, R.drawable.ic_shares, R.drawable.ic_selfs};
     //选中时icon
-    private int[] selectIcon = {R.drawable.ic_shouye, R.drawable.ic_topics, R.drawable.ic_shares, R.drawable.ic_selfs};
+    private int[] selectIcon = {R.drawable.ic_shouye_u, R.drawable.ic_topics_u, R.drawable.ic_shares_u, R.drawable.ic_selfs_u};
 
     private List<Fragment> fragments = new ArrayList<>();
 

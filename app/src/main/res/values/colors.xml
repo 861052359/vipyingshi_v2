@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E4E64F1F</color>
+    <color name="colorPrimary">#FCDD4C1E</color>
     <color name="colorPrimaryDark">#5685FF</color>
     <color name="colorAccent">#5685FF</color>
     <color name="shimmer_light_transparent">#16000000</color>
