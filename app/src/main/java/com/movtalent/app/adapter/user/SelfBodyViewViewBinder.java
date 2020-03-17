@@ -1,5 +1,6 @@
 package com.movtalent.app.adapter.user;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,12 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.azhon.appupdate.manager.DownloadManager;
 import com.lib.common.util.DataInter;
+import com.lib.common.util.SharePreferencesUtil;
 import com.lib.common.util.utils.DataCleanManager;
-import com.movtalent.app.App_Config;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.impl.CenterListPopupView;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.media.playerlib.PlayApp;
 import com.movtalent.app.R;
+import com.movtalent.app.model.dto.UpdateDto;
+import com.movtalent.app.presenter.UpdatePresenter;
+import com.movtalent.app.presenter.iview.IUpdate;
 import com.movtalent.app.util.UserUtil;
 import com.movtalent.app.view.AllDownLoadActivity;
 import com.movtalent.app.view.AllFavorActivity;
@@ -23,9 +31,11 @@ import com.movtalent.app.view.AllHistoryActivity;
 import com.movtalent.app.view.CastDescriptionnActivity;
 import com.movtalent.app.view.LoginActivity;
 import com.movtalent.app.view.ReportActivitys;
-import com.movtalent.app.view.WebDetailActivity;
+import com.movtalent.app.view.SettingActivity;
+import com.movtalent.app.view.UserProfileActivity;
 import com.movtalent.app.view.dialog.BottomShareView;
 
+import butterknife.BindView;
 import kale.sharelogin.content.ShareContent;
 import kale.sharelogin.content.ShareContentPic;
 import me.drakeet.multitype.ItemViewBinder;
@@ -35,6 +45,12 @@ import me.drakeet.multitype.ItemViewBinder;
  * createTime 2019-09-16
  */
 public class SelfBodyViewViewBinder extends ItemViewBinder<SelfBodyView, SelfBodyViewViewBinder.ViewHolder> {
+
+
+    TextView exit;
+
+    private DownloadManager manager;
+
 
     @NonNull
     @Override
@@ -69,35 +85,47 @@ public class SelfBodyViewViewBinder extends ItemViewBinder<SelfBodyView, SelfBod
               }
           }).show();
         });
-        holder.selfQQ.setOnClickListener(v -> new XPopup.Builder(v.getContext()).asConfirm("提示", "欢迎加入qq群： 1195996300", () -> {
-        }).show());
+        holder.selfQQ.setOnClickListener(v -> {
+            int mzsm = R.string.mzsm;
+            new XPopup.Builder(v.getContext()).asConfirm("免责声明", String.valueOf(mzsm), () -> {
+            }).show();
+        });
         holder.selfShare.setOnClickListener(v -> {
             final Bitmap thumbBmp = ((BitmapDrawable) v.getContext().getResources().getDrawable(R.drawable.share)).getBitmap();
             ShareContent mShareContent = new ShareContentPic(thumbBmp);
             new XPopup.Builder(v.getContext()).asCustom(new BottomShareView(v.getContext(), mShareContent)).show();
         });
 
-        //预留1点击
-        holder.selfJump1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebDetailActivity.start(v.getContext(), App_Config.JUMP_URL_1);
-            }
+        //账户设置点击
+        holder.selfJump1.setOnClickListener(v -> UserProfileActivity.start(v.getContext()));
+        //播放器设置点击
+        String[] arr = {"MediaPlayer解码","ExoPlayer解码","IjkPlayer解码"};
+        holder.selfJump2.setOnClickListener(v -> {
+            CenterListPopupView listPopupView = new XPopup.Builder(v.getContext()).asCenterList("切换解码器", arr, new OnSelectListener() {
+                @Override
+                public void onSelect(int position, String text) {
+                    switch (position) {
+                        case 0:
+                            PlayApp.swich(PlayApp.PLAN_ID_MEDIA);
+                            SharePreferencesUtil.setIntSharePreferences(v.getContext(),DataInter.KEY.PLAY_CODEC,0);
+                            break;
+                        case 1:
+                            PlayApp.swich(PlayApp.PLAN_ID_EXO);
+                            SharePreferencesUtil.setIntSharePreferences(v.getContext(),DataInter.KEY.PLAY_CODEC,1);
+                            break;
+                        case 2:
+                            PlayApp.swich(PlayApp.PLAN_ID_IJK);
+                            SharePreferencesUtil.setIntSharePreferences(v.getContext(),DataInter.KEY.PLAY_CODEC,2);
+                            break;
+                    }
+                }
+            });
+            listPopupView.show();
+            int preferences = SharePreferencesUtil.getIntSharePreferences(v.getContext(), DataInter.KEY.PLAY_CODEC, 0);
+            listPopupView.setCheckedPosition(preferences);
         });
-        //预留2点击
-        holder.selfJump2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebDetailActivity.start(v.getContext(), App_Config.JUMP_URL_2);
-            }
-        });
-        //预留3点击
-        holder.selfJump3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebDetailActivity.start(v.getContext(), App_Config.JUMP_URL_3);
-            }
-        });
+        //升级版本点击
+        holder.selfJump3.setOnClickListener(v-> {});
     }
 
 

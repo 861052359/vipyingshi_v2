@@ -69,7 +69,11 @@ public class SettingActivity extends AppCompatActivity {
     Toolbar toolbarLayout;
     @BindView(R.id.exit)
     TextView exit;
-    private DownloadManager manager;
+    private  DownloadManager manager;
+
+    public TextView getExit(){
+        return exit;
+    }
 
     public static void start(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
@@ -149,7 +153,6 @@ public class SettingActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             checkVersion(dto);
-
                         }
                     });
                 }
@@ -180,7 +183,7 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    private void checkVersion(UpdateDto dto) {
+    public  void checkVersion(UpdateDto dto) {
         /*
          * 整个库允许配置的内容
          * 非必选

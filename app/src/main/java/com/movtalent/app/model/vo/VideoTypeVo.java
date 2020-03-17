@@ -47,6 +47,11 @@ public class VideoTypeVo implements Serializable {
         public void setType_name(String type_name) {
             this.type_name = type_name;
         }
+
+        public String toString() {
+            return "["+type_id+"---"+type_name+"]";
+        }
+
     }
 
     public static VideoTypeVo from(TypeListDto data) {
@@ -60,6 +65,7 @@ public class VideoTypeVo implements Serializable {
             classBean.setType_name(infos.getType_name());
             dataBean.add(classBean);
         }
+        System.out.println("分类信息为"+dataBean);
         videoTypeVo.setClassInfo(dataBean);
         return videoTypeVo;
     }

@@ -9,7 +9,7 @@ android {
         applicationId "com.dabaotv.drm"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 100
+        versionCode 101
         versionName "1.3.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

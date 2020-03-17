@@ -91,9 +91,10 @@ public class AdCover extends BaseCover implements OnTimerUpdateListener {
         adContent.addView(imageView);
     }
 
+    //播放器广告
     @SuppressLint("CheckResult")
     private void showTimeCaculate() {
-        RxCountDown.countdown(5)
+        RxCountDown.countdown(0)
                 .doOnSubscribe(disposable -> {
                 })
                 .subscribe(integer -> timeCut.setText(integer + "秒"), throwable -> {

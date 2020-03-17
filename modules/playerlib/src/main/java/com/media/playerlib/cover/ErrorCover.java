@@ -174,7 +174,7 @@ public class ErrorCover extends BaseCover implements View.OnClickListener {
         mStatus = STATUS_ERROR;
         if (!mErrorShow) {
             setErrorInfo("出错了！");
-            setHandleInfo("重试");
+            setHandleInfo("刷新");
             setErrorState(true);
         }
     }
