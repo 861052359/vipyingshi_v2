@@ -29,7 +29,7 @@ public class Jiexi {
         // ----- init 接口列表 -----------------
         mJklist = new ArrayList<>();
         if (mJklist.size() < 1){
-            mJklist.add(new DBjk("线路2","http://www.dabaotv.cn/m3u8.php/?url=",2));
+            mJklist.add(new DBjk("线路2","https://api.52jiexi.top/vip.php?url=",2));
         }
 
 
