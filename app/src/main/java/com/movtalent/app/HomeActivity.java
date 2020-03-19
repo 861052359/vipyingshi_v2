@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -30,10 +31,13 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.lib.common.util.DataInter;
 import com.lxj.xpopup.XPopup;
+import com.movtalent.app.model.dto.Param;
+import com.movtalent.app.model.dto.ParamDto;
 import com.movtalent.app.model.dto.PostDto;
 import com.movtalent.app.model.dto.UpdateDto;
 import com.movtalent.app.model.vo.VideoTypeVo;
 import com.movtalent.app.presenter.HomePresenter;
+import com.movtalent.app.presenter.ParamPresenter;
 import com.movtalent.app.presenter.PublishPresenter;
 import com.movtalent.app.presenter.UpdatePresenter;
 import com.movtalent.app.presenter.iview.IUpdate;
@@ -45,6 +49,10 @@ import com.movtalent.app.view.SelfTabFragment;
 import com.movtalent.app.view.ShareTabFragment;
 import com.movtalent.app.view.TopicTabFragment;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.umeng.analytics.MobclickAgent;
+
+import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -93,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
     private ShareTabFragment shareTabFragment;
     private SelfTabFragment selfTabFragment;
     private PublishPresenter publishPresenter;
+    private ParamPresenter paramPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +195,8 @@ public class HomeActivity extends AppCompatActivity {
         });
         publishPresenter.getPost();
     }
+
+
 
     private void registReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -322,5 +333,15 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

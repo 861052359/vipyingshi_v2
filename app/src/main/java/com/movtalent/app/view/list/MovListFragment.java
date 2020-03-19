@@ -156,7 +156,8 @@ public class MovListFragment extends Fragment implements IListView {
 
     @Override
     public void loadError() {
-        movRv.setNoMore(true);
+        if(movRv != null)
+            movRv.setNoMore(true);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.movtalent.app;
 
+import com.movtalent.app.model.dto.Param;
+
 /**
  * @author huangyong
  * createTime 2019-10-13
@@ -18,7 +20,6 @@ public class App_Config {
      * 主分类配置，不建议修改
      */
     public static final String[] TAB_ARR = {"推荐", "电影", "电视剧", "动漫", "综艺" ,"VIP视频"};
-
 
     /**
      * 友盟统计key

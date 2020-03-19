@@ -1,5 +1,7 @@
 package com.movtalent.app.presenter;
 
+import android.util.Log;
+
 import com.movtalent.app.http.ApiService;
 import com.movtalent.app.http.BaseApi;
 import com.movtalent.app.model.dto.CommentDDto;
@@ -65,6 +67,7 @@ public class CommentPresenter {
                         .getComment(vodId, page, limit), new BaseApi.IResponseListener<CommentGDto>() {
                     @Override
                     public void onSuccess(CommentGDto data) {
+                        Log.d("mytest",data.getData().getItem().size() + "评论个数" + vodId +"影片ID");
                         ArrayList<CommentVo> commentVos = CommentVo.from(data);
                         icView.loadAllDone(commentVos);
                     }

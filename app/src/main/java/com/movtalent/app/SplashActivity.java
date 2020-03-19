@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,10 +19,17 @@ import com.media.playerlib.manager.RxCountDown;
 import com.media.playerlib.widget.GlobalDATA;
 import com.movtalent.app.http.UrlConfig;
 import com.media.playerlib.model.AdConfigDto;
+import com.movtalent.app.model.dto.Param;
+import com.movtalent.app.model.dto.ParamDto;
 import com.movtalent.app.model.vo.VideoTypeVo;
+import com.movtalent.app.presenter.ParamPresenter;
 import com.movtalent.app.presenter.SplashPresenter;
 import com.movtalent.app.presenter.iview.ITypeView;
 import com.movtalent.app.util.ToastUtil;
+
+import org.litepal.LitePal;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +52,8 @@ public class SplashActivity extends AppCompatActivity implements ITypeView {
     @BindView(R.id.time_cut)
     TextView timeCut;
 
+    private ParamPresenter paramPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +65,22 @@ public class SplashActivity extends AppCompatActivity implements ITypeView {
         SplashPresenter splashPresenter = new SplashPresenter(this);
         splashPresenter.getTypeList();
         splashPresenter.getad();
+        initParam();
 
+    }
+    private void initParam() {
+        paramPresenter = new ParamPresenter(new ParamPresenter.IParam() {
+            @Override
+            public void loadParam(ParamDto dto) {
+                Param param = new Param();
+                param.setQq(dto.getData().getQq());
+                param.setmJklist(dto.getData().getmJklist());
+                param.setAd(dto.getData().isAd());
+                param.setViplevel(dto.getData().getViplevel());
+                App_Config.param = param;
+            }
+        });
+        paramPresenter.getParam();
     }
 
     @Override
@@ -89,6 +114,7 @@ public class SplashActivity extends AppCompatActivity implements ITypeView {
         if (!TextUtils.isEmpty(GlobalDATA.AD_INFO)) {
             AdConfigDto.DataBean dataBean = new Gson().fromJson(GlobalDATA.AD_INFO, AdConfigDto.DataBean.class);
             if (dataBean != null && dataBean.getAd_splash() != null && !TextUtils.isEmpty(dataBean.getAd_splash().getImg())) {
+                Log.d("mytest",dataBean.getAd_splash().getImg());
                 Glide.with(this).load(dataBean.getAd_splash().getImg()).into(splashAd);
                 if (TextUtils.isEmpty(dataBean.getAd_splash().getLink())) {
                     return;
@@ -100,6 +126,7 @@ public class SplashActivity extends AppCompatActivity implements ITypeView {
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        return;
                     }
                 });
             }
@@ -109,6 +136,7 @@ public class SplashActivity extends AppCompatActivity implements ITypeView {
 
     @Override
     public void loadError() {
+        Log.d("aaaaaaaaaaaaaaaaaa","aaaaaaaaaa");
         ToastUtil.showMessage("数据加载失败，请退出重试");
     }
 

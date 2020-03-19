@@ -3,6 +3,7 @@ package com.movtalent.app;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,9 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
+
+import org.litepal.LitePal;
+import org.litepal.LitePalApplication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +48,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
+//        LitePal.initialize(this);
+//        LitePal.getDatabase();
         //放在其他库初始化前
         SpiderMan.init(this).setTheme(R.style.SpiderManTheme_Dark);
         //初始化友盟统计、推送

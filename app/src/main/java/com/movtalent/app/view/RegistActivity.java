@@ -75,7 +75,7 @@ public class RegistActivity extends AppCompatActivity implements IUserView {
                     return;
                 }
                 if (name.getText().toString().length() < 6) {
-                    ToastUtil.showMessage("密码长度不得少于");
+                    ToastUtil.showMessage("密码长度不得少于6位");
                     return;
                 }
                 if (TextUtils.isEmpty(pass.getText().toString())) {
@@ -101,13 +101,13 @@ public class RegistActivity extends AppCompatActivity implements IUserView {
 
     @Override
     public void loadDone(LoginDto dto) {
-        if (dto.getData().getCode() == 0 && dto.getCode() == 200) {
+        if (dto.getData().getCode() == 0 && dto.getCode() == 200 && dto.getData().getMsg() == null) {
             ToastUtil.showMessage("注册成功" + dto.getCode());
             UserUtil.saveUserInfo(this, dto.getData(), new Gson().toJson(dto.getData()));
             sendBroadcast(new Intent(DataInter.KEY.ACTION_REFRESH_COIN));
             finish();
         } else {
-            ToastUtil.showMessage("注册失败" + dto.getMsg());
+            ToastUtil.showMessage("注册失败" + dto.getData().getMsg());
         }
 
     }

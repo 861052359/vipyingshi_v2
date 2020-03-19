@@ -8,6 +8,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,7 @@ public class HomeTabFragment extends Fragment implements IHomeView {
         homePresenter = new HomePresenter(this);
         homePresenter.getHomeLevel();
 
-        homePresenter.getHomeBannerLevel(6,1,10);
+        homePresenter.getHomeBannerLevel(9,1,10);
     }
 
     @Override

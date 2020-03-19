@@ -40,9 +40,10 @@ public class BannerEntityViewBinder extends ItemViewBinder<BannerEntity, BannerE
 
         ArrayList<CommonVideoVo> videoVos = bannerEntity.getVideoVos();
         if (videoVos!=null&&videoVos.size()>0){
+
             holder.bgaBanner.setAutoPlay(true)
                     .setPages(videoVos, new CustomViewHolder())
-                    .setBannerStyle(BannerConfig.NOT_INDICATOR)
+                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                     .setBannerAnimation(Transformer.Accordion)
                     .setDelayTime(3000)
                     .start();

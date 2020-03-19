@@ -90,6 +90,7 @@ public class UrlConfig {
      */
     static final String getPublish = App_Config.SERVER_PATH+"public/?service=App.Mov.CheckPubish";
     static final String getADConfig = App_Config.SERVER_PATH+"public/?service=App.Mov.GetAdConfig";
+    static final String getParam = App_Config.SERVER_PATH+"public/?service=App.Mov.GetParam";
 
 
     /*用户相关*/

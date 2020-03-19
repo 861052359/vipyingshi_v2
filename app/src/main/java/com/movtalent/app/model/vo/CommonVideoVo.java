@@ -31,6 +31,7 @@ public class CommonVideoVo {
     private String movActor;
     private String movArea;
     private String movYear;
+    private int movLevel;
 
     public String getVodPlayFrom() {
         return vodPlayFrom;
@@ -209,9 +210,17 @@ public class CommonVideoVo {
             videoVo.setVodPlayFrom(video.getVod_play_from());
             videoVo.setMovUpdateTime(video.getVod_time());
             videoVo.setMovScore(video.getVod_score());
+            videoVo.setMovLevel(video.getVod_level());
             commonVideoVos.add(videoVo);
         }
         return commonVideoVos;
     }
 
+    public int getMovLevel() {
+        return movLevel;
+    }
+
+    public void setMovLevel(int movLevel) {
+        this.movLevel = movLevel;
+    }
 }

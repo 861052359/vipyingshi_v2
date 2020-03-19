@@ -11,6 +11,7 @@ import com.movtalent.app.model.dto.FavorDto;
 import com.movtalent.app.model.dto.HomeLevelDto;
 import com.movtalent.app.model.dto.IconDto;
 import com.movtalent.app.model.dto.LoginDto;
+import com.movtalent.app.model.dto.ParamDto;
 import com.movtalent.app.model.dto.PayLogDto;
 import com.movtalent.app.model.dto.PointDto;
 import com.movtalent.app.model.dto.PostDto;
@@ -136,6 +137,9 @@ public interface ApiService {
 
     @GET(UrlConfig.getPublish)
     Observable<PostDto> getPost();
+
+    @GET(UrlConfig.getParam)
+    Observable<ParamDto> getParam();
 
     @GET(UrlConfig.getCategoryList)
     Observable<VideoListDto> getCategory(@Query("type") int typeId,

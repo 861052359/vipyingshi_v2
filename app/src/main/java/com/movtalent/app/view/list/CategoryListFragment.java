@@ -56,8 +56,8 @@ public class CategoryListFragment extends Fragment implements IListView, IHomeVi
 
     private void initView() {
 
-        loadingPopupView = new XPopup.Builder(getContext()).asLoading("正在加载...");
-        loadingPopupView.show();
+        //loadingPopupView = new XPopup.Builder(getContext()).asLoading("正在加载...");
+        //loadingPopupView.show();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         movRv.setLayoutManager(gridLayoutManager);
@@ -118,7 +118,7 @@ public class CategoryListFragment extends Fragment implements IListView, IHomeVi
             movRv.postDelayed(() -> {
                 if (movRv != null) {
                     movRv.refreshComplete();
-                    loadingPopupView.dismiss();
+                    //loadingPopupView.dismiss();
                 }
             }, 1000);
         }
@@ -126,13 +126,13 @@ public class CategoryListFragment extends Fragment implements IListView, IHomeVi
 
     @Override
     public void loadEmpty() {
-        loadingPopupView.dismiss();
+        //loadingPopupView.dismiss();
     }
 
     @Override
     public void loadError() {
         movRv.setNoMore(true);
-        loadingPopupView.dismiss();
+        //loadingPopupView.dismiss();
     }
 
     @Override
@@ -143,7 +143,7 @@ public class CategoryListFragment extends Fragment implements IListView, IHomeVi
             movRv.postDelayed(() -> {
                 if (movRv != null) {
                     movRv.loadMoreComplete();
-                    loadingPopupView.dismiss();
+                    //loadingPopupView.dismiss();
                 }
             }, 1000);
         }
@@ -173,7 +173,7 @@ public class CategoryListFragment extends Fragment implements IListView, IHomeVi
         index = 1;
         if (listPresenter!=null){
             listPresenter.getCategory(typeId, requestArea, requestYear, index, 18);
-            loadingPopupView.show();
+            //loadingPopupView.show();
         }
 
     }

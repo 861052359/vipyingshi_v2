@@ -70,7 +70,7 @@ public class OnlineCategoryAdapter extends RecyclerView.Adapter {
         Glide.with(context).load(imgUrl).transition(DrawableTransitionOptions.withCrossFade(300)).apply(requestOptions).into(((ItemHolder) holder).itemPoster);
 
         ((ItemHolder) holder).movName.setText(datas.get(position).getMovName());
-        ((ItemHolder) holder).vodYear.setText(datas.get(position).getMovDesc().trim());
+//        ((ItemHolder) holder).vodYear.setText(datas.get(position).getMovDesc().trim());
 
         ((ItemHolder) holder).itemView.setOnClickListener(view -> {
             try {

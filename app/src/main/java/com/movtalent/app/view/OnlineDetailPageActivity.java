@@ -36,6 +36,7 @@ import com.media.playerlib.PlayApp;
 import com.media.playerlib.manager.PlayerPresenter;
 import com.media.playerlib.model.VideoPlayVo;
 import com.media.playerlib.widget.GlobalDATA;
+import com.movtalent.app.App_Config;
 import com.movtalent.app.R;
 import com.movtalent.app.adapter.DetailAdSection;
 import com.movtalent.app.adapter.DetailAdSectionViewBinder;
@@ -67,6 +68,8 @@ import com.movtalent.app.presenter.iview.ICView;
 import com.movtalent.app.presenter.iview.IDetailView;
 import com.movtalent.app.presenter.iview.IFavor;
 import com.movtalent.app.presenter.iview.IRecView;
+import com.movtalent.app.util.Jiexi;
+import com.movtalent.app.util.ParseWebUrlHelper;
 import com.movtalent.app.util.ToastUtil;
 import com.movtalent.app.util.UserUtil;
 import com.movtalent.app.view.dialog.BottomInputSheet;
@@ -95,13 +98,12 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
- * @author huangyong
- * 播放页
- * createTime 2019-09-14
+ * @author xujunxiang
+ * createTime 2020-03-05
  */
 public class OnlineDetailPageActivity extends AppCompatActivity implements IDetailView, IRecView, View.OnClickListener {
 
-    private int groupPlay=0;
+    private int groupPlay=0;//播放器索引
 
     @BindView(R.id.video_container)
     FrameLayout videoContainer;
@@ -126,13 +128,15 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
     private CommentPresenter commentPresenter;
     private int index;
     private CommonVideoVo videoVo;
-    private ArrayList<String> urls;
+    private ArrayList<String> urls; //当前播放源的播放URL列表
     private CommonVideoVo globalVideoVo;
+    private Jiexi mJiexi;
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(DataInter.KEY.ACTION_REFRESH_COIN)) {
                 if (playerPresenter != null) {
+//                    playerPresenter.setAuthCode(PlayApp.AUTH_ALL);//开放所有
                     if (UserUtil.checkAuth()) {
                         playerPresenter.setAuthCode(PlayApp.AUTH_ALL);
 //                        playerPresenter.restart();
@@ -171,13 +175,11 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
         detailPresenter = new DetailPresenter(this);
         detailPresenter.getDetail(vodId);
 
-
         items = new ArrayList<>();
 
         playerPresenter = new PlayerPresenter();
 
         detailAdapter.setItems(items);
-
 
         initFavorAbout();
         initCommentAbout();
@@ -196,7 +198,6 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
     private void initCommentAbout() {
         index = 1;
         commentPresenter = new CommentPresenter(icView);
-
     }
 
     private void initFavorAbout() {
@@ -226,7 +227,6 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
         CommentContainerSection commentContainerSection = new CommentContainerSection(new ArrayList<>(), onloadListener);
         items.add(commentContainerSection);
         detailAdapter.notifyDataSetChanged();
-
     }
 
     /**
@@ -235,17 +235,40 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
      * @param commonVideoVo
      */
     private void loadSeri(CommonVideoVo commonVideoVo) {
+        Log.d("mytest","loadSeri总");
         DetailPlaySection section = new DetailPlaySection(groupPlay,commonVideoVo, new OnSeriClickListener() {
-
             @Override
-            public void switchPlay(String url, int index, int groupIndex) {
-                playerPresenter.switchPlay(url, index);
+            public void switchPlay(String playUrl, int index, int groupIndex) {
+                Log.d("mytest","loadSeri");
+                GlobalDATA.PLAY_INDEX = index;
                 groupPlay = groupIndex;
+                //xujunxiang
+                VideoPlayVo videoPlayVo = new VideoPlayVo();
+                videoPlayVo.setPlayUrl(commonVideoVo.getMovPlayUrlList().get(groupIndex).get(index).getPlayUrl());
+                videoPlayVo.setVodId(Integer.parseInt(commonVideoVo.getMovId()));
+                videoPlayVo.setTitle(commonVideoVo.getMovName());
+                urls = new ArrayList<>();
+                for (int i = 0; i < commonVideoVo.getMovPlayUrlList().get(groupIndex).size(); i++) {
+                    urls.add(commonVideoVo.getMovPlayUrlList().get(groupIndex).get(i).getPlayUrl());
+                }
+                videoPlayVo.setSeriUrls(urls);
+                playerPresenter.initData(videoPlayVo);
+                //end xujunxiang
+                Log.d("mytest","播放哪一集"+index);
+                if (playUrl.endsWith(".m3u8") || playUrl.endsWith(".mp4") ||
+                        playUrl.endsWith(".flv") || playUrl.endsWith("avi")) {
+                    playerPresenter.switchPlay(playUrl, index, false);
+                    return;
+                }
+                if(playerPresenter.isAd)
+                    playerPresenter.resetAdCover();//解析提前切换广告
+                parseUrl(playUrl ,index);//解析URL
             }
 
             @Override
             public void showAllSeri(CommonVideoVo commonVideoVo) {
                 showPlaySheetDialog(commonVideoVo.getMovPlayUrlList().get(groupPlay));
+                return;
             }
         });
         items.add(section);
@@ -286,36 +309,59 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
     }
 
     private void loadPlay(CommonVideoVo commonVideoVo) {
-
-
         if (commonVideoVo.getMovPlayUrlList() == null || commonVideoVo.getMovPlayUrlList().size() == 0) {
             ToastUtil.showMessage("当前影片没有可播放地址");
             return;
         }
-
-        int authCode = checkUserPlayAuth();
-
+        if(commonVideoVo.getMovPlayUrlList().get(groupPlay).size() == 0){
+            ToastUtil.showMessage("该影片没有播放数据");
+            return;
+        }
+        Log.d("mytest", "推荐级别："+commonVideoVo.getMovLevel() + "");
+        int authCode = checkUserPlayAuth(commonVideoVo.getMovLevel());
 
         globalVideoVo = commonVideoVo;
-        playerPresenter.initView(this, videoContainer, fullContainer, authCode);
+        playerPresenter.initView(this, videoContainer, fullContainer, authCode, App_Config.param == null ? true : App_Config.param.isAd());
+        playerPresenter.setControlListener(new PlayerPresenter.OnControlListener(){
+            @Override
+            public void closeSwd() {
+
+            }
+            @Override
+            public void onPlayParseUrl(String parseUrl, int anInt){
+                Log.d("mytest","选集");
+                parseUrl(parseUrl,anInt);
+            }
+        });
+
         VideoPlayVo videoPlayVo = new VideoPlayVo();
         videoPlayVo.setPlayUrl(commonVideoVo.getMovPlayUrlList().get(groupPlay).get(0).getPlayUrl());
         videoPlayVo.setVodId(Integer.parseInt(commonVideoVo.getMovId()));
         videoPlayVo.setTitle(commonVideoVo.getMovName());
-
         urls = new ArrayList<>();
         for (int i = 0; i < commonVideoVo.getMovPlayUrlList().get(groupPlay).size(); i++) {
             urls.add(commonVideoVo.getMovPlayUrlList().get(groupPlay).get(i).getPlayUrl());
         }
         videoPlayVo.setSeriUrls(urls);
-        playerPresenter.initData(videoPlayVo);
+
+        playerPresenter.initData(videoPlayVo);//初始化播放数据
+
         playerPresenter.configOrientationSensor(this);
         playerPresenter.setPlayListener(playListener);
         HistoryDBhelper.checkHistoryAndPlay(vodId, playSwitchListener);
     }
 
-    private int checkUserPlayAuth() {
+    private int checkUserPlayAuth(int vod_level) {
         int authCode = -1;
+//        return PlayApp.AUTH_ALL;
+        if(App_Config.param != null){
+            Log.d("mytest",App_Config.param.getViplevel()+"不能看的级别");
+            if(vod_level != App_Config.param.getViplevel()){
+                authCode = PlayApp.AUTH_ALL;
+                return authCode;
+            }
+        }
+
         //判断用户是否有权限播放
         if (!UserUtil.checkAuth()) {
             //试看10分钟
@@ -324,16 +370,47 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
             //完整观看
             authCode = PlayApp.AUTH_ALL;
         }
+//        authCode = PlayApp.AUTH_ALL;
         return authCode;
     }
 
 
     HistoryDBhelper.OnPlaySwitchListener playSwitchListener = new HistoryDBhelper.OnPlaySwitchListener() {
+        /**
+         * xujunxiang
+         * @param i 播放视频的集数
+         */
         @Override
         public void onPlay(int i) {
             if (urls.size() > i) {
-                playerPresenter.switchPlay(urls.get(i), i);
+                String playUrl = urls.get(i);
                 GlobalDATA.PLAY_INDEX = i;
+                if (playUrl.endsWith(".m3u8") || playUrl.endsWith(".mp4") ||
+                        playUrl.endsWith(".flv") || playUrl.endsWith("avi")) {
+                    playerPresenter.switchPlayFirst(playUrl, i);
+                    return;
+                }
+                //xujunxiang
+                if (mJiexi == null) mJiexi = new Jiexi().init(OnlineDetailPageActivity.this, new Jiexi.OnListener() {
+                    /**
+                     * xujunxiang
+                     * @param t
+                     * @param errId 错误代码 0 成功 -1 失败
+                     * @param url 解析出来的URL
+                     * @param type 视频的格式类型
+                     */
+                    @Override
+                    public void ent(Jiexi t, int errId, final String url, String type) {
+                        if (errId == 0) {
+                            Log.d("mytest", "解析完成+"+url);
+                            if(playerPresenter != null) {
+                                playerPresenter.switchPlayFirst(url, i);
+                            }
+                        }
+                    }
+                });
+                mJiexi.start(playUrl);
+                //end xujunxiang
             }
         }
     };
@@ -361,6 +438,27 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
         }
         unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    private void parseUrl(String playUrl, int i){
+        //xujunxiang
+        playerPresenter.pause();
+        GlobalDATA.PLAY_INDEX = i;
+        if (mJiexi == null) mJiexi = new Jiexi().init(OnlineDetailPageActivity.this, new Jiexi.OnListener() {
+            @Override
+            public void ent(Jiexi t, int errId, final String msg, String type) {
+                if (errId == 0) {
+                    Log.d("mytest", "解析完成+"+msg);
+                    Log.d("mytest","播放哪一集"+i);
+                    Log.d("mytest","播放哪一集"+ GlobalDATA.PLAY_INDEX);
+                    playerPresenter.switchPlay(msg,GlobalDATA.PLAY_INDEX,true);
+                }else{
+                    ToastUtil.showMessage("视频播放失败，请切换其他视频源");
+                }
+            }
+        });
+        mJiexi.start(playUrl);
+        //end xujunxiang
     }
 
     PlayerPresenter.OnPlayListener playListener = new PlayerPresenter.OnPlayListener() {
@@ -401,18 +499,27 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.play_all_list_layout, null);
         bottomSheetDialog.setContentView(view);
-        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        bottomSheetDialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundColor(Color.TRANSPARENT);
+
         PlayListAdapter adapter2 = new PlayListAdapter(playUrlList, new OnSeriClickListener() {
 
             @Override
-            public void switchPlay(String url, int index, int groupIndex) {
+            public void switchPlay(String playUrl, int index, int groupIndex) {
+                Log.d("mytest","showPlaySheetDialog");
+                groupPlay = groupIndex;
+                GlobalDATA.PLAY_INDEX = index;
                 Toast.makeText(OnlineDetailPageActivity.this, "即将播放第" + (index + 1) + "集", Toast.LENGTH_SHORT).show();
-                playerPresenter.switchPlay(url, index);
+                detailAdapter.notifyDataSetChanged();
+                if (playUrl.endsWith(".m3u8") || playUrl.endsWith(".mp4") ||
+                        playUrl.endsWith(".flv") || playUrl.endsWith("avi")) {
+                    playerPresenter.switchPlay(playUrl, index, false);
+                    return;
+                }
+                parseUrl(playUrl, index);
             }
 
             @Override
-            public void showAllSeri(CommonVideoVo commonVideoVo) {
-            }
+            public void showAllSeri(CommonVideoVo commonVideoVo) { }
         }, groupPlay);
         RecyclerView allList = view.findViewById(R.id.all_list);
         TextView title = view.findViewById(R.id.title);
@@ -518,6 +625,7 @@ public class OnlineDetailPageActivity extends AppCompatActivity implements IDeta
     public void loadRecmmedDone(ArrayList<CommonVideoVo> videoVos) {
         items.add(items.size() - 1, new DetailRecmmendSection(videoVos));
         detailAdapter.notifyItemChanged(2);
+        Log.d("mytest","評論的影片ID:"+ vodId + "  "+index);
         commentPresenter.getCommentByVodId(vodId, index, 18);
     }
 

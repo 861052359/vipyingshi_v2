@@ -38,7 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @BindView(R.id.backup)
     ImageView backup;
     @BindView(R.id.center_tv)
-    public TextView centerTv;
+    TextView centerTv;
     @BindView(R.id.right_view)
     FrameLayout rightView;
     @BindView(R.id.toolbar_layout)

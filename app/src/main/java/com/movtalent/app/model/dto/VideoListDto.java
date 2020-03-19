@@ -1,5 +1,9 @@
 package com.movtalent.app.model.dto;
 
+import android.util.Log;
+
+import com.movtalent.app.App_Config;
+
 import java.util.List;
 
 /**
@@ -78,6 +82,24 @@ public class VideoListDto {
         private String vod_time_add;
         private String vod_content;
         private String vod_play_url;
+        private String vod_pic_slide;
+        private int vod_level;
+
+        public void setVod_pic_slide(String vod_pic_slide){
+            this.vod_pic_slide = vod_pic_slide;
+        }
+        public String getVod_pic_slide(){
+            if(vod_pic_slide == null || vod_pic_slide.equals("")){
+                return vod_pic_slide;
+            }
+            if(vod_pic_slide.indexOf("mac://") !=-1){
+                vod_pic_slide = vod_pic_slide.replaceFirst("mac://","https://");
+            }
+            if(vod_pic_slide.indexOf("upload/vod") !=-1 && vod_pic_slide.indexOf("http") == -1){
+                vod_pic_slide = App_Config.BASE_URL + vod_pic_slide;
+            }
+            return vod_pic_slide;
+        }
 
         public String getVod_play_from() {
             return vod_play_from;
@@ -130,8 +152,13 @@ public class VideoListDto {
         }
 
         public String getVod_pic() {
-            String s = vod_pic.replaceFirst("mac:", "https:");
-            return s;
+            if(vod_pic.indexOf("mac://") !=-1){
+                vod_pic = vod_pic.replaceFirst("mac://","https://");
+            }
+            if(vod_pic.indexOf("upload/vod") !=-1 && vod_pic.indexOf("http") == -1){
+                vod_pic = App_Config.BASE_URL + vod_pic;
+            }
+            return vod_pic;
         }
 
         public void setVod_pic(String vod_pic) {
@@ -208,6 +235,14 @@ public class VideoListDto {
 
         public void setVod_play_url(String vod_play_url) {
             this.vod_play_url = vod_play_url;
+        }
+
+        public int getVod_level() {
+            return vod_level;
+        }
+
+        public void setVod_level(int vod_level) {
+            this.vod_level = vod_level;
         }
     }
 }

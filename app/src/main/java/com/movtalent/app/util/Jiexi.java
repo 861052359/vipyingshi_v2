@@ -3,8 +3,19 @@ package com.movtalent.app.util;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.kk.taurus.playerbase.config.PlayerConfig;
 import com.lib.common.util.tool.StringUtil;
+import com.media.playerlib.PlayApp;
+import com.movtalent.app.App_Config;
+import com.movtalent.app.http.HttpUtil;
+import com.movtalent.app.model.dto.Param;
+import com.movtalent.app.model.dto.ParamDto;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,21 +33,21 @@ public class Jiexi {
     private String mvUrl; // 待解析的地址
     private int cutIndex;// 次数
     private ParseWebUrlHelper mParseHelper;
+    private List<DBjk> mJklist = new ArrayList<>();
     public Jiexi init(Activity context, OnListener listener){
         this.context = context;
         this.mListener = listener;
 
         // ----- init 接口列表 -----------------
         mJklist = new ArrayList<>();
-        if (mJklist.size() < 1){
-            mJklist.add(new DBjk("线路2","https://api.52jiexi.top/vip.php?url=",2));
+        if(App_Config.param != null && App_Config.param.getmJklist() != null)
+            mJklist = App_Config.param.getmJklist();
+        if (mJklist.size() < 2){
+            mJklist.add(new DBjk("线路1","https://gege.ha123.club/wq/?url=",2));
+            mJklist.add(new DBjk("线路1","http://jx.itaoju.top/?url=",2));
         }
-
-
         return this;
     };
-
-    private List<DBjk> mJklist = new ArrayList<>();
 
     public void start(String t){
         if (mParseHelper != null) mParseHelper.stop();
@@ -45,17 +56,67 @@ public class Jiexi {
         start2();
     }
     private void start2(){
+        String url = mJklist.get(cutIndex).getUrl() + mvUrl;
+        int type = mJklist.get(cutIndex).getType();
+
         // 开启定时
         isEnt = false;
-        int str_time = ShareSpUtils.getInt(context,"player_parse_waiting_time",12);
+        int str_time = ShareSpUtils.getInt(context,"player_parse_waiting_time",10);
+        Log.d("mytest","超时时间：" + str_time);
         new Handler().postDelayed(parseTime,str_time * 1000);
+
+        if(type == 1){
+            new Thread(){
+                public void run(){
+                    Log.d("mytest", "需要解析的URL"+ url);
+                    String resStr = HttpUtil.getData(url);
+                    Log.d("mytest", ""+ resStr);
+                    JSONObject json = null;
+                    try {
+                        json = JSONObject.parseObject(resStr);
+                    }catch (Exception e){
+
+                    }
+                    if(json == null || json.getString("url") == null){
+                        handler.sendEmptyMessage(-1);
+                        return;
+                    }
+                    Log.d("mytest",json.getString("url"));
+                    if(json.getIntValue("success") == 1 && json.getIntValue("code") == 200){
+                        String xurl = json.getString("url");
+                        if(xurl.length() < 10){
+                            handler.sendEmptyMessage(-1);
+                            return;
+                        }
+                        final String xtype = json.getString("type");
+                        if(json.getString("url").substring(0,2).equals("//")){
+                            xurl = "http:" + xurl;
+//                            PlayerConfig.setDefaultPlanId(PlayApp.PLAN_ID_MEDIA);
+                        }else{
+//                            PlayerConfig.setDefaultPlanId(PlayApp.PLAN_ID_EXO);
+                        }
+                        final String resultUrl = xurl;
+                        isEnt = true;
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mListener.ent(Jiexi.this,0,resultUrl,xtype);
+                            }
+                        });
+                    }else{
+                        Log.d("mytest",resStr);
+                        handler.sendEmptyMessage(-1);
+                    }
+                }
+            }.start();
+            return;
+        }
 
         // 开始解析，必须在ui线程中解析
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mJklist.size() >= cutIndex) cutIndex = 0;
-                String url = mJklist.get(cutIndex).getUrl() + mvUrl;
+                Log.d("mytest","解析URL:"+ url);
                 mParseHelper = ParseWebUrlHelper.getInstance().init(context, url);
                 mParseHelper.setOnParseListener(new ParseWebUrlHelper.OnParseWebUrlListener() {
                     @Override
@@ -86,7 +147,6 @@ public class Jiexi {
         });
     }
 
-
     private boolean isEnt;
 
     // 解析计时
@@ -94,8 +154,8 @@ public class Jiexi {
         @Override
         public void run() {
             if (!isEnt){
-                mListener.ent(Jiexi.this,2,"超时",null);
-                mParseHelper.stop();
+                if(mParseHelper != null)
+                    mParseHelper.stop();
                 mParseHelper = null;
                 handler.sendEmptyMessage(-1);
             }
@@ -111,9 +171,12 @@ public class Jiexi {
             switch (msg.what){
 
                 case -1: // 解析失败
+                    Log.d("mytest","解析失败"+ mJklist.size());
+                    cutIndex = cutIndex + 1;
                     if (cutIndex < mJklist.size()){
-                        cutIndex=cutIndex+1;
                         start2();
+                    }else{
+                        mListener.ent(Jiexi.this,2,"超时",null);
                     }
                     break;
             }
@@ -142,6 +205,19 @@ public class Jiexi {
     private int STATE_STOP = 3; // 停止
     private int STATE_ERROR = 4; // 错误
 
+    private String parseSuffix(String url) {
+        String con = url;
+        String t1 = StringUtil.getTextRight(con,".");
+        if (t1.length()< 5) return t1;
 
+        t1 = StringUtil.getLeftText(url,"?");
+        if (t1 != null) con = t1;
+
+        t1 = StringUtil.getTextRight(con,".");
+        if (t1 == null || t1.length() > 5) t1 = StringUtil.getTextRight(con,"/");
+
+        con = t1;
+        return con;
+    }
 
 }

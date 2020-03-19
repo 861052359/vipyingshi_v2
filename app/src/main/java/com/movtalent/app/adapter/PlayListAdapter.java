@@ -2,6 +2,7 @@ package com.movtalent.app.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayItemHolder> {
 
     private ArrayList<VideoVo> urls;
     private OnSeriClickListener clickListener;
-    private int playIndex = 0;
     private int groupPlay;
 
     public PlayListAdapter(ArrayList<VideoVo> urls, OnSeriClickListener clickListener, int groupPlay) {
@@ -43,12 +43,12 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayItemHolder> {
         if (playItemHolder.index == null) {
             return;
         }
-        playItemHolder.index.setText((i + 1) + "");
+//        playItemHolder.index.setText((i + 1) + "");
+        playItemHolder.index.setText(urls.get(i).getTitle());
         playItemHolder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
+//                GlobalDATA.PLAY_INDEX = i;
                 clickListener.switchPlay(urls.get(i).getPlayUrl(), i, groupPlay);
-                playIndex = i;
-                GlobalDATA.PLAY_INDEX = i;
                 notifyDataSetChanged();
             }
         });
@@ -58,9 +58,5 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayItemHolder> {
     @Override
     public int getItemCount() {
         return urls.size();
-    }
-
-    public void setIndex(int currentIndex) {
-        playIndex = currentIndex;
     }
 }

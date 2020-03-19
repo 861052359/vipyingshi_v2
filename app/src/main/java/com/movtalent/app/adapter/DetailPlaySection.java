@@ -10,25 +10,7 @@ import com.movtalent.app.model.vo.CommonVideoVo;
 public class DetailPlaySection {
 
     private CommonVideoVo commonVideoVo;
-
     private int groupPlay;
-
-    public int getGroupPlay() {
-        return groupPlay;
-    }
-
-    public void setGroupPlay(int groupPlay) {
-        this.groupPlay = groupPlay;
-    }
-
-    public CommonVideoVo getCommonVideoVo() {
-        return commonVideoVo;
-    }
-
-    public OnSeriClickListener getClickListener() {
-        return clickListener;
-    }
-
     private OnSeriClickListener clickListener;
 
     public DetailPlaySection(int groupPlay, CommonVideoVo commonVideoVo, OnSeriClickListener clickListener) {
@@ -36,4 +18,18 @@ public class DetailPlaySection {
         this.groupPlay = groupPlay;
         this.clickListener = clickListener;
     }
+
+    public int getGroupPlay() {
+        return groupPlay;
+    }
+    public void setGroupPlay(int groupPlay) {
+        this.groupPlay = groupPlay;
+    }
+    public CommonVideoVo getCommonVideoVo() { return commonVideoVo; }
+    public OnSeriClickListener getClickListener() {
+        return clickListener;
+    }
+
+
+
 }

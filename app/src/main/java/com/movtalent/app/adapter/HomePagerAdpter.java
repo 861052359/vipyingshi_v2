@@ -42,8 +42,6 @@ public class HomePagerAdpter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        System.out.println(position);
-        System.out.println(UrlConfig.tabX[position]);
         return UrlConfig.tabX[position];
     }
 }

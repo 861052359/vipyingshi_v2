@@ -46,7 +46,7 @@ public class ItemVideosViewBinder extends ItemViewBinder<VideoListDto.DataBean, 
                 holder.itemView.getContext().startActivity(intent);
             }
         });
-        holder.uptime.setText(itemVideo.getVod_content().trim());
+//        holder.uptime.setText(itemVideo.getVod_content().trim());
         holder.upRemark.setText(itemVideo.getVod_remarks());
     }
 
@@ -57,14 +57,14 @@ public class ItemVideosViewBinder extends ItemViewBinder<VideoListDto.DataBean, 
         @NonNull
         TextView title;
 
-        TextView uptime;
+//        TextView uptime;
         TextView upRemark;
 
         ViewHolder(View itemView) {
             super(itemView);
             cover = itemView.findViewById(R.id.post_img);
             title = itemView.findViewById(R.id.post_title);
-            uptime = itemView.findViewById(R.id.up_time);
+//            uptime = itemView.findViewById(R.id.up_time);
             upRemark = itemView.findViewById(R.id.update_seri);
             itemView.setOnClickListener(v -> Toast.makeText(v.getContext(), String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show());
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.media.playerlib.widget.GlobalDATA;
 import com.movtalent.app.R;
 import com.movtalent.app.adapter.event.OnSeriClickListener;
 import com.movtalent.app.model.VideoVo;
+import com.movtalent.app.model.vo.CommonVideoVo;
 
 import java.util.ArrayList;
 
@@ -31,13 +33,19 @@ public class DetailPlaySectionViewBinder extends ItemViewBinder<DetailPlaySectio
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        Log.d("mytest","onCreateViewHolder");
         View root = inflater.inflate(R.layout.item_detail_play_section, parent, false);
         return new ViewHolder(root);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull DetailPlaySection detailPlaySection) {
-        holder.setData(holder.itemView.getContext(), detailPlaySection.getCommonVideoVo().getMovPlayUrlList().get(0), detailPlaySection.getClickListener(),detailPlaySection.getGroupPlay());
+        Log.d("mytest","调用onBindViewHolder"+detailPlaySection.getCommonVideoVo().getVodPlayFrom());
+        CommonVideoVo commonVideoVo = detailPlaySection.getCommonVideoVo();
+        holder.setData(holder.itemView.getContext(),
+                commonVideoVo.getMovPlayUrlList().get(detailPlaySection.getGroupPlay()),//当前分组下的视频列表集合
+                detailPlaySection.getClickListener(),
+                detailPlaySection.getGroupPlay());//视频播放器ID
         holder.seeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,9 +55,8 @@ public class DetailPlaySectionViewBinder extends ItemViewBinder<DetailPlaySectio
             }
         });
 
-
-        SparseArray<ArrayList<VideoVo>> movPlayUrlList = detailPlaySection.getCommonVideoVo().getMovPlayUrlList();
-        String vodPlayFrom = detailPlaySection.getCommonVideoVo().getVodPlayFrom();
+        SparseArray<ArrayList<VideoVo>> movPlayUrlList = commonVideoVo.getMovPlayUrlList();
+        String vodPlayFrom = commonVideoVo.getVodPlayFrom();
         String[] from = vodPlayFrom.split("[$][$][$]");
         holder.playRes.setText("切换线路："+from[detailPlaySection.getGroupPlay()]);
         holder.playRes.setOnClickListener(new View.OnClickListener() {
@@ -59,11 +66,15 @@ public class DetailPlaySectionViewBinder extends ItemViewBinder<DetailPlaySectio
                         new OnSelectListener() {
                             @Override
                             public void onSelect(int position, String text) {
+                                Log.d("mytest","切换数据源" +position +"   "+detailPlaySection.getGroupPlay());
                                 holder.setData(holder.itemView.getContext(),
-                                        movPlayUrlList.get(position), detailPlaySection.getClickListener(), detailPlaySection.getGroupPlay());
-                                detailPlaySection.getClickListener().switchPlay(movPlayUrlList.get(position).get(GlobalDATA.PLAY_INDEX).getPlayUrl(), GlobalDATA.PLAY_INDEX,position);
-                                getAdapter().notifyDataSetChanged();
+                                        movPlayUrlList.get(position), detailPlaySection.getClickListener(), position);
+                                detailPlaySection.getClickListener().switchPlay(movPlayUrlList.get(position).get(GlobalDATA.PLAY_INDEX).getPlayUrl(),
+                                        GlobalDATA.PLAY_INDEX, position);
+//                                getAdapter().notifyDataSetChanged();
                                 detailPlaySection.setGroupPlay(position);
+                                holder.playRes.setText("切换线路："+from[position]);
+
                             }
                         });
                 popupView.setCheckedPosition(detailPlaySection.getGroupPlay());

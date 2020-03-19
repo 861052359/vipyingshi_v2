@@ -18,7 +18,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
 
     public TextView movName;
     public TextView movRemark;
-    public TextView vodYear;
+//    public TextView vodYear;
     public ImageView itemPoster;
 
     public ItemHolder(@NonNull View itemView) {
@@ -26,6 +26,6 @@ public class ItemHolder extends RecyclerView.ViewHolder {
         movName = itemView.findViewById(R.id.post_title);
         itemPoster = itemView.findViewById(R.id.post_img);
         movRemark = itemView.findViewById(R.id.update_seri);
-        vodYear = itemView.findViewById(R.id.up_time);
+/       vodYear = itemView.findViewById(R.id.up_time);
     }
 }

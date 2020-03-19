@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -73,6 +74,7 @@ public class BottomShareView extends BottomPopupView implements View.OnClickList
                 dismiss();
                 break;
             case R.id.share_qq:
+                Log.d("mytest","点击了QQ分享");
                 ShareLoginLib.doShare(activity, QQPlatform.FRIEND, shareContent, shareListener);
                 dismiss();
                 break;
@@ -93,6 +95,7 @@ public class BottomShareView extends BottomPopupView implements View.OnClickList
         @Override
         public void onSuccess() {
             super.onSuccess();
+            Log.d("mytest", "分享成功了");
             ToastUtil.showMessage("分享成功");
             String userToken = UserUtil.getUserToken(getContext());
             if (!TextUtils.isEmpty(userToken)) {
@@ -104,6 +107,7 @@ public class BottomShareView extends BottomPopupView implements View.OnClickList
         @Override
         public void onError(String errorMsg) {
             super.onError(errorMsg);
+            Log.d("mytest", "分享失败了");
             ToastUtil.showMessage(errorMsg);
         }
     };

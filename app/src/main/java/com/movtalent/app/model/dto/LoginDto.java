@@ -67,6 +67,7 @@ public class LoginDto {
         private String rec_look_link;
         private String group_id;
         private String user_end_time;
+        private String msg;
 
         public int getCode() {
             return code;
@@ -154,6 +155,14 @@ public class LoginDto {
 
         public void setUser_end_time(String user_end_time) {
             this.user_end_time = user_end_time;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
     }
 }

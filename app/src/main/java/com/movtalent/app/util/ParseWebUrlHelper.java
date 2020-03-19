@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -227,10 +228,10 @@ public class ParseWebUrlHelper {
         mlink = url;
         String type = "";
         //onParseListener.onFindUrl(type);
-
+//        Log.d("mytest","newlink +"+url);
         try {
             type = parseSuffix(url);
-            if (type.equals("js") || type.equals("css") || type.equals("html") || type.equals("ico")){
+            if (type.equals("js") || type.equals("css") || type.equals("html") || type.equals("ico") || url.indexOf("url=") != -1){
                 return;
             }
 
@@ -287,7 +288,6 @@ public class ParseWebUrlHelper {
 
         t1 = StringUtil.getTextRight(con,".");
         if (t1 == null || t1.length() > 5) t1 = StringUtil.getTextRight(con,"/");
-
 
         con = t1;
         return con;
